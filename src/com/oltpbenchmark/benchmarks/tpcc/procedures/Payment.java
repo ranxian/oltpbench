@@ -53,8 +53,8 @@ public class Payment extends TPCCProcedure {
 			+ "WHERE C_W_ID = ? AND C_D_ID = ? AND C_ID = ?");
 	public SQLStmt payUpdateCustBalSQL = new SQLStmt("UPDATE " + TPCCConstants.TABLENAME_CUSTOMER + " SET C_BALANCE = ?, C_YTD_PAYMENT = ?, "
 			+ "C_PAYMENT_CNT = ? WHERE C_W_ID = ? AND C_D_ID = ? AND C_ID = ?");
-	public SQLStmt payInsertHistSQL = new SQLStmt("INSERT INTO " + TPCCConstants.TABLENAME_HISTORY + " (H_C_D_ID, H_C_W_ID, H_C_ID, H_D_ID, H_W_ID, H_DATE, H_AMOUNT, H_DATA) "
-			+ " VALUES (?,?,?,?,?,?,?,?)");
+	// public SQLStmt payInsertHistSQL = new SQLStmt("INSERT INTO " + TPCCConstants.TABLENAME_HISTORY + " (H_C_D_ID, H_C_W_ID, H_C_ID, H_D_ID, H_W_ID, H_DATE, H_AMOUNT, H_DATA) "
+			// + " VALUES (?,?,?,?,?,?,?,?)");
 	public SQLStmt customerByNameSQL = new SQLStmt("SELECT C_FIRST, C_MIDDLE, C_ID, C_STREET_1, C_STREET_2, C_CITY, "
 			+ "C_STATE, C_ZIP, C_PHONE, C_CREDIT, C_CREDIT_LIM, C_DISCOUNT, "
 			+ "C_BALANCE, C_YTD_PAYMENT, C_PAYMENT_CNT, C_SINCE FROM " + TPCCConstants.TABLENAME_CUSTOMER + " "
@@ -71,7 +71,7 @@ public class Payment extends TPCCProcedure {
 	private PreparedStatement payGetCustCdata = null;
 	private PreparedStatement payUpdateCustBalCdata = null;
 	private PreparedStatement payUpdateCustBal = null;
-	private PreparedStatement payInsertHist = null;
+	// private PreparedStatement payInsertHist = null;
 	private PreparedStatement customerByName = null;
 
 
@@ -91,7 +91,7 @@ public class Payment extends TPCCProcedure {
 			payGetCustCdata =this.getPreparedStatement(conn, payGetCustCdataSQL);
 			payUpdateCustBalCdata =this.getPreparedStatement(conn, payUpdateCustBalCdataSQL);
 			payUpdateCustBal =this.getPreparedStatement(conn, payUpdateCustBalSQL);
-			payInsertHist =this.getPreparedStatement(conn, payInsertHistSQL);
+			// payInsertHist =this.getPreparedStatement(conn, payInsertHistSQL);
 			customerByName=this.getPreparedStatement(conn, customerByNameSQL);
 
 
@@ -267,16 +267,16 @@ public class Payment extends TPCCProcedure {
 			String h_data = w_name + "    " + d_name;
 
 
-			payInsertHist.setInt(1, c_d_id);
-			payInsertHist.setInt(2, c_w_id);
-			payInsertHist.setInt(3, c.c_id);
-			payInsertHist.setInt(4, d_id);
-			payInsertHist.setInt(5, w_id);
-			payInsertHist
-					.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
-			payInsertHist.setFloat(7, h_amount);
-			payInsertHist.setString(8, h_data);
-			payInsertHist.executeUpdate();
+			// payInsertHist.setInt(1, c_d_id);
+			// payInsertHist.setInt(2, c_w_id);
+			// payInsertHist.setInt(3, c.c_id);
+			// payInsertHist.setInt(4, d_id);
+			// payInsertHist.setInt(5, w_id);
+			// payInsertHist
+			// 		.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+			// payInsertHist.setFloat(7, h_amount);
+			// payInsertHist.setString(8, h_data);
+			// payInsertHist.executeUpdate();
 
 			conn.commit();
 

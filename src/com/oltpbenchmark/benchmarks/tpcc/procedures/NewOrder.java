@@ -46,13 +46,13 @@ public class NewOrder extends TPCCProcedure {
 					+ " WHERE D_W_ID = ? AND D_ID = ? FOR UPDATE"
     				);
 
-	public final SQLStmt  stmtInsertNewOrderSQL = new SQLStmt("INSERT INTO "+ TPCCConstants.TABLENAME_NEWORDER + " (NO_O_ID, NO_D_ID, NO_W_ID) VALUES ( ?, ?, ?)");
+	// public final SQLStmt  stmtInsertNewOrderSQL = new SQLStmt("INSERT INTO "+ TPCCConstants.TABLENAME_NEWORDER + " (NO_O_ID, NO_D_ID, NO_W_ID) VALUES ( ?, ?, ?)");
 
 	public final SQLStmt  stmtUpdateDistSQL = new SQLStmt("UPDATE " + TPCCConstants.TABLENAME_DISTRICT + " SET D_NEXT_O_ID = D_NEXT_O_ID + 1 WHERE D_W_ID = ? AND D_ID = ?");
 
-	public final SQLStmt  stmtInsertOOrderSQL = new SQLStmt("INSERT INTO " + TPCCConstants.TABLENAME_OPENORDER
-			+ " (O_ID, O_D_ID, O_W_ID, O_C_ID, O_ENTRY_D, O_OL_CNT, O_ALL_LOCAL)"
-			+ " VALUES (?, ?, ?, ?, ?, ?, ?)");
+	// public final SQLStmt  stmtInsertOOrderSQL = new SQLStmt("INSERT INTO " + TPCCConstants.TABLENAME_OPENORDER
+			// + " (O_ID, O_D_ID, O_W_ID, O_C_ID, O_ENTRY_D, O_OL_CNT, O_ALL_LOCAL)"
+			// + " VALUES (?, ?, ?, ?, ?, ?, ?)");
 
 	public final SQLStmt  stmtGetItemSQL = new SQLStmt("SELECT I_PRICE, I_NAME , I_DATA FROM " + TPCCConstants.TABLENAME_ITEM + " WHERE I_ID = ?");
 
@@ -63,20 +63,20 @@ public class NewOrder extends TPCCProcedure {
 	public final SQLStmt  stmtUpdateStockSQL = new SQLStmt("UPDATE " + TPCCConstants.TABLENAME_STOCK + " SET S_QUANTITY = ? , S_YTD = S_YTD + ?, S_ORDER_CNT = S_ORDER_CNT + 1, S_REMOTE_CNT = S_REMOTE_CNT + ? "
 			+ " WHERE S_I_ID = ? AND S_W_ID = ?");
 
-	public final SQLStmt  stmtInsertOrderLineSQL = new SQLStmt("INSERT INTO " + TPCCConstants.TABLENAME_ORDERLINE + " (OL_O_ID, OL_D_ID, OL_W_ID, OL_NUMBER, OL_I_ID, OL_SUPPLY_W_ID,"
-			+ "  OL_QUANTITY, OL_AMOUNT, OL_DIST_INFO) VALUES (?,?,?,?,?,?,?,?,?)");
+	// public final SQLStmt  stmtInsertOrderLineSQL = new SQLStmt("INSERT INTO " + TPCCConstants.TABLENAME_ORDERLINE + " (OL_O_ID, OL_D_ID, OL_W_ID, OL_NUMBER, OL_I_ID, OL_SUPPLY_W_ID,"
+			// + "  OL_QUANTITY, OL_AMOUNT, OL_DIST_INFO) VALUES (?,?,?,?,?,?,?,?,?)");
 
 
 	// NewOrder Txn
 	private PreparedStatement stmtGetCustWhse = null;
 	private PreparedStatement stmtGetDist = null;
-	private PreparedStatement stmtInsertNewOrder = null;
+	// private PreparedStatement stmtInsertNewOrder = null;
 	private PreparedStatement stmtUpdateDist = null;
-	private PreparedStatement stmtInsertOOrder = null;
+	// private PreparedStatement stmtInsertOOrder = null;
 	private PreparedStatement stmtGetItem = null;
 	private PreparedStatement stmtGetStock = null;
 	private PreparedStatement stmtUpdateStock = null;
-	private PreparedStatement stmtInsertOrderLine = null;
+	// private PreparedStatement stmtInsertOrderLine = null;
 
 
     public ResultSet run(Connection conn, Random gen,
@@ -89,13 +89,13 @@ public class NewOrder extends TPCCProcedure {
 		//initializing all prepared statements
 		stmtGetCustWhse=this.getPreparedStatement(conn, stmtGetCustWhseSQL);
 		stmtGetDist=this.getPreparedStatement(conn, stmtGetDistSQL);
-		stmtInsertNewOrder=this.getPreparedStatement(conn, stmtInsertNewOrderSQL);
+		// stmtInsertNewOrder=this.getPreparedStatement(conn, stmtInsertNewOrderSQL);
 		stmtUpdateDist =this.getPreparedStatement(conn, stmtUpdateDistSQL);
-		stmtInsertOOrder =this.getPreparedStatement(conn, stmtInsertOOrderSQL);
+		// stmtInsertOOrder =this.getPreparedStatement(conn, stmtInsertOOrderSQL);
 		stmtGetItem =this.getPreparedStatement(conn, stmtGetItemSQL);
 		stmtGetStock =this.getPreparedStatement(conn, stmtGetStockSQL);
 		stmtUpdateStock =this.getPreparedStatement(conn, stmtUpdateStockSQL);
-		stmtInsertOrderLine =this.getPreparedStatement(conn, stmtInsertOrderLineSQL);
+		// stmtInsertOrderLine =this.getPreparedStatement(conn, stmtInsertOrderLineSQL);
 
 
 		int districtID = TPCCUtil.randomNumber(terminalDistrictLowerID,terminalDistrictUpperID, gen);
@@ -197,22 +197,22 @@ public class NewOrder extends TPCCProcedure {
 
 			// woonhak, need to change order, because of foreign key constraints
 			//[[insert ooder first
-			stmtInsertOOrder.setInt(1, o_id);
-			stmtInsertOOrder.setInt(2, d_id);
-			stmtInsertOOrder.setInt(3, w_id);
-			stmtInsertOOrder.setInt(4, c_id);
-			stmtInsertOOrder.setTimestamp(5,
-					new Timestamp(System.currentTimeMillis()));
-			stmtInsertOOrder.setInt(6, o_ol_cnt);
-			stmtInsertOOrder.setInt(7, o_all_local);
-			stmtInsertOOrder.executeUpdate();
+			// stmtInsertOOrder.setInt(1, o_id);
+			// stmtInsertOOrder.setInt(2, d_id);
+			// stmtInsertOOrder.setInt(3, w_id);
+			// stmtInsertOOrder.setInt(4, c_id);
+			// stmtInsertOOrder.setTimestamp(5,
+			// 		new Timestamp(System.currentTimeMillis()));
+			// stmtInsertOOrder.setInt(6, o_ol_cnt);
+			// stmtInsertOOrder.setInt(7, o_all_local);
+			// stmtInsertOOrder.executeUpdate();
 			//insert ooder first]]
 			/*TODO: add error checking */
 
-			stmtInsertNewOrder.setInt(1, o_id);
-			stmtInsertNewOrder.setInt(2, d_id);
-			stmtInsertNewOrder.setInt(3, w_id);
-			stmtInsertNewOrder.executeUpdate();
+			// stmtInsertNewOrder.setInt(1, o_id);
+			// stmtInsertNewOrder.setInt(2, d_id);
+			// stmtInsertNewOrder.setInt(3, w_id);
+			// stmtInsertNewOrder.executeUpdate();
 			/*TODO: add error checking */
 
 
@@ -342,20 +342,20 @@ public class NewOrder extends TPCCProcedure {
 					break;
 				}
 
-				stmtInsertOrderLine.setInt(1, o_id);
-				stmtInsertOrderLine.setInt(2, d_id);
-				stmtInsertOrderLine.setInt(3, w_id);
-				stmtInsertOrderLine.setInt(4, ol_number);
-				stmtInsertOrderLine.setInt(5, ol_i_id);
-				stmtInsertOrderLine.setInt(6, ol_supply_w_id);
-				stmtInsertOrderLine.setInt(7, ol_quantity);
-				stmtInsertOrderLine.setFloat(8, ol_amount);
-				stmtInsertOrderLine.setString(9, ol_dist_info);
-				stmtInsertOrderLine.addBatch();
+				// stmtInsertOrderLine.setInt(1, o_id);
+				// stmtInsertOrderLine.setInt(2, d_id);
+				// stmtInsertOrderLine.setInt(3, w_id);
+				// stmtInsertOrderLine.setInt(4, ol_number);
+				// stmtInsertOrderLine.setInt(5, ol_i_id);
+				// stmtInsertOrderLine.setInt(6, ol_supply_w_id);
+				// stmtInsertOrderLine.setInt(7, ol_quantity);
+				// stmtInsertOrderLine.setFloat(8, ol_amount);
+				// stmtInsertOrderLine.setString(9, ol_dist_info);
+				// stmtInsertOrderLine.addBatch();
 
 			} // end-for
 
-			stmtInsertOrderLine.executeBatch();
+			// stmtInsertOrderLine.executeBatch();
 			stmtUpdateStock.executeBatch();
 
 			total_amount *= (1 + w_tax + d_tax) * (1 - c_discount);
@@ -365,8 +365,8 @@ public class NewOrder extends TPCCProcedure {
 		    throw userEx;
 		}
 	    finally {
-            if (stmtInsertOrderLine != null)
-                stmtInsertOrderLine.clearBatch();
+            // if (stmtInsertOrderLine != null)
+                // stmtInsertOrderLine.clearBatch();
               if (stmtUpdateStock != null)
                 stmtUpdateStock.clearBatch();
         }
