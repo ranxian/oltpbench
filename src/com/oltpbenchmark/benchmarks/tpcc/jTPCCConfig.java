@@ -52,7 +52,7 @@ public final class jTPCCConfig {
 
 	public final static int configCommitCount = 1000; // commit every n records
 	public final static int configWhseCount = 1;
-	public final static int configItemCount = 100000; // tpc-c std = 100,000
+	public final static int configItemCount = 1000; // tpc-c std = 100,000
 	public final static int configDistPerWhse = 10; // tpc-c std = 10
 	public final static int configCustPerDist = 3000; // tpc-c std = 3,000
 

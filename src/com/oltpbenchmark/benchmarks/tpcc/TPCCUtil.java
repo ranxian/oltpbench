@@ -28,6 +28,7 @@ package com.oltpbenchmark.benchmarks.tpcc;
 
 import static com.oltpbenchmark.benchmarks.tpcc.jTPCCConfig.dateFormat;
 import static com.oltpbenchmark.benchmarks.tpcc.jTPCCConfig.nameTokens;
+import static com.oltpbenchmark.benchmarks.tpcc.jTPCCConfig.configItemCount;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -105,7 +106,7 @@ public class TPCCUtil {
 	private static final int C_LAST_RUN_C = 223; // in range [0, 255]
 
 	public static int getItemID(Random r) {
-		return nonUniformRandom(8191, OL_I_ID_C, 1, 100000, r);
+		return nonUniformRandom(8191, OL_I_ID_C, 1, configItemCount, r);
 	}
 
 	public static int getCustomerID(Random r) {
