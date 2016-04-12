@@ -161,7 +161,8 @@ public class YCSBWorker extends Worker {
     private Map<Integer, String> buildNewValues(int numVals) {
         Map<Integer, String> vals = new HashMap<Integer, String>();
         for (int i = 1; i <= numVals; i++) {
-            vals.put(i, TextGenerator.randomStr(rng(), 100));
+            //vals.put(i, TextGenerator.randomStr(rng(), 100));
+            vals.put(i, "");
         }
         return vals;
     }
@@ -169,7 +170,8 @@ public class YCSBWorker extends Worker {
     private Map<Integer, String> buildValues(int numVals) {
         this.m.clear();
         for (int i = 1; i <= numVals; i++) {
-            this.m.put(i, TextGenerator.randomStr(rng(), 100));
+            //this.m.put(i, TextGenerator.randomStr(rng(), 100));
+            this.m.put(i, "");
         }
         return this.m;
     }
