@@ -135,7 +135,7 @@ public class YCSBWorker extends Worker {
     private Map<Integer, String> buildValues(int numVals) {
         this.m.clear();
         for (int i = 1; i <= numVals; i++) {
-            this.m.put(i, TextGenerator.randomStr(rng(), 100));
+            this.m.put(i, "");
         }
         return this.m;
     }
