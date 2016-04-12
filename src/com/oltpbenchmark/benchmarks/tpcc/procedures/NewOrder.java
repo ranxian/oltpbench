@@ -41,9 +41,14 @@ public class NewOrder extends TPCCProcedure {
 			+ " WHERE W_ID = ? AND C_W_ID = ?"
 			+ " AND C_D_ID = ? AND C_ID = ?");
 
+    // public final SQLStmt stmtGetDistSQL = new SQLStmt(
+    // 		"SELECT D_NEXT_O_ID, D_TAX FROM " + TPCCConstants.TABLENAME_DISTRICT
+				// 	+ " WHERE D_W_ID = ? AND D_ID = ? FOR UPDATE"
+    // 				);
+
     public final SQLStmt stmtGetDistSQL = new SQLStmt(
     		"SELECT D_NEXT_O_ID, D_TAX FROM " + TPCCConstants.TABLENAME_DISTRICT
-					+ " WHERE D_W_ID = ? AND D_ID = ? FOR UPDATE"
+					+ " WHERE D_W_ID = ? AND D_ID = ?"
     				);
 
 	// public final SQLStmt  stmtInsertNewOrderSQL = new SQLStmt("INSERT INTO "+ TPCCConstants.TABLENAME_NEWORDER + " (NO_O_ID, NO_D_ID, NO_W_ID) VALUES ( ?, ?, ?)");
@@ -56,9 +61,12 @@ public class NewOrder extends TPCCProcedure {
 
 	public final SQLStmt  stmtGetItemSQL = new SQLStmt("SELECT I_PRICE, I_NAME , I_DATA FROM " + TPCCConstants.TABLENAME_ITEM + " WHERE I_ID = ?");
 
+	// public final SQLStmt  stmtGetStockSQL = new SQLStmt("SELECT S_QUANTITY, S_DATA, S_DIST_01, S_DIST_02, S_DIST_03, S_DIST_04, S_DIST_05, "
+	// 		+ "       S_DIST_06, S_DIST_07, S_DIST_08, S_DIST_09, S_DIST_10"
+	// 		+ " FROM " + TPCCConstants.TABLENAME_STOCK + " WHERE S_I_ID = ? AND S_W_ID = ? FOR UPDATE");
 	public final SQLStmt  stmtGetStockSQL = new SQLStmt("SELECT S_QUANTITY, S_DATA, S_DIST_01, S_DIST_02, S_DIST_03, S_DIST_04, S_DIST_05, "
 			+ "       S_DIST_06, S_DIST_07, S_DIST_08, S_DIST_09, S_DIST_10"
-			+ " FROM " + TPCCConstants.TABLENAME_STOCK + " WHERE S_I_ID = ? AND S_W_ID = ? FOR UPDATE");
+			+ " FROM " + TPCCConstants.TABLENAME_STOCK + " WHERE S_I_ID = ? AND S_W_ID = ?");
 
 	public final SQLStmt  stmtUpdateStockSQL = new SQLStmt("UPDATE " + TPCCConstants.TABLENAME_STOCK + " SET S_QUANTITY = ? , S_YTD = S_YTD + ?, S_ORDER_CNT = S_ORDER_CNT + 1, S_REMOTE_CNT = S_REMOTE_CNT + ? "
 			+ " WHERE S_I_ID = ? AND S_W_ID = ?");
@@ -87,7 +95,7 @@ public class NewOrder extends TPCCProcedure {
 
 
 		//initializing all prepared statements
-		stmtGetCustWhse=this.getPreparedStatement(conn, stmtGetCustWhseSQL);
+		// stmtGetCustWhse=this.getPreparedStatement(conn, stmtGetCustWhseSQL);
 		stmtGetDist=this.getPreparedStatement(conn, stmtGetDistSQL);
 		// stmtInsertNewOrder=this.getPreparedStatement(conn, stmtInsertNewOrderSQL);
 		stmtUpdateDist =this.getPreparedStatement(conn, stmtUpdateDistSQL);
@@ -152,36 +160,37 @@ public class NewOrder extends TPCCProcedure {
 		char[] brandGeneric = new char[o_ol_cnt];
 		int ol_supply_w_id, ol_i_id, ol_quantity;
 		int s_remote_cnt_increment;
-		float ol_amount, total_amount = 0;
+		float ol_amount;
+		//, total_amount = 0;
 		try
 		{
-			stmtGetCustWhse.setInt(1, w_id);
-			stmtGetCustWhse.setInt(2, w_id);
-			stmtGetCustWhse.setInt(3, d_id);
-			stmtGetCustWhse.setInt(4, c_id);
-			ResultSet rs = stmtGetCustWhse.executeQuery();
-			if (!rs.next())
-				throw new RuntimeException("W_ID=" + w_id + " C_D_ID=" + d_id
-						+ " C_ID=" + c_id + " not found!");
-			c_discount = rs.getFloat("C_DISCOUNT");
-			c_last = rs.getString("C_LAST");
-			c_credit = rs.getString("C_CREDIT");
-			w_tax = rs.getFloat("W_TAX");
-			rs.close();
-			rs = null;
+			// stmtGetCustWhse.setInt(1, w_id);
+			// stmtGetCustWhse.setInt(2, w_id);
+			// stmtGetCustWhse.setInt(3, d_id);
+			// stmtGetCustWhse.setInt(4, c_id);
+			ResultSet rs;
+			// if (!rs.next())
+			// 	throw new RuntimeException("W_ID=" + w_id + " C_D_ID=" + d_id
+			// 			+ " C_ID=" + c_id + " not found!");
+			// c_discount = rs.getFloat("C_DISCOUNT");
+			// c_last = rs.getString("C_LAST");
+			// c_credit = rs.getString("C_CREDIT");
+			// w_tax = rs.getFloat("W_TAX");
+			// rs.close();
+			// rs = null;
 
 
-			stmtGetDist.setInt(1, w_id);
-			stmtGetDist.setInt(2, d_id);
-			rs = stmtGetDist.executeQuery();
-			if (!rs.next()) {
-				throw new RuntimeException("D_ID=" + d_id + " D_W_ID=" + w_id
-						+ " not found!");
-			}
-			d_next_o_id = rs.getInt("D_NEXT_O_ID");
-			d_tax = rs.getFloat("D_TAX");
-			rs.close();
-			rs = null;
+			// stmtGetDist.setInt(1, w_id);
+			// stmtGetDist.setInt(2, d_id);
+			// rs = stmtGetDist.executeQuery();
+			// if (!rs.next()) {
+			// 	throw new RuntimeException("D_ID=" + d_id + " D_W_ID=" + w_id
+			// 			+ " not found!");
+			// }
+			// d_next_o_id = rs.getInt("D_NEXT_O_ID");
+			// d_tax = rs.getFloat("D_TAX");
+			// rs.close();
+			// rs = null;
 
 			//woonhak, need to change order because of foreign key constraints
 			//update next_order_id first, but it might doesn't matter
@@ -193,7 +202,7 @@ public class NewOrder extends TPCCProcedure {
 						"Error!! Cannot update next_order_id on district for D_ID="
 								+ d_id + " D_W_ID=" + w_id);
 
-			o_id = d_next_o_id;
+			// o_id = d_next_o_id;
 
 			// woonhak, need to change order, because of foreign key constraints
 			//[[insert ooder first
@@ -300,7 +309,7 @@ public class NewOrder extends TPCCProcedure {
 
 				ol_amount = ol_quantity * i_price;
 				orderLineAmounts[ol_number - 1] = ol_amount;
-				total_amount += ol_amount;
+				// total_amount += ol_amount;
 
 				if (i_data.indexOf("GENERIC") != -1
 						&& s_data.indexOf("GENERIC") != -1) {
@@ -358,7 +367,7 @@ public class NewOrder extends TPCCProcedure {
 			// stmtInsertOrderLine.executeBatch();
 			stmtUpdateStock.executeBatch();
 
-			total_amount *= (1 + w_tax + d_tax) * (1 - c_discount);
+			// total_amount *= (1 + w_tax + d_tax) * (1 - c_discount);
 		} catch(UserAbortException userEx)
 		{
 		    LOG.debug("Caught an expected error in New Order");

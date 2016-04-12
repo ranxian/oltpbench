@@ -638,12 +638,12 @@ public class TPCCLoader extends Loader{
 		int t = 0;
 
 		Customer customer = new Customer();
-		History history = new History();
-		PrintWriter outHist = null;
+		// History history = new History();
+		// PrintWriter outHist = null;
 
 		try {
 		    PreparedStatement custPrepStmt = getInsertStatement(TPCCConstants.TABLENAME_CUSTOMER);
-		    PreparedStatement histPrepStmt = getInsertStatement(TPCCConstants.TABLENAME_HISTORY);
+		    // PreparedStatement histPrepStmt = getInsertStatement(TPCCConstants.TABLENAME_HISTORY);
 
 			now = new java.util.Date();
 
@@ -652,10 +652,10 @@ public class TPCCLoader extends Loader{
 						+ "customer.csv"));
 				LOG.debug("\nWriting Customer file to: "
 						+ fileLocation + "customer.csv");
-				outHist = new PrintWriter(new FileOutputStream(fileLocation
-						+ "cust-hist.csv"));
-				LOG.debug("\nWriting Customer History file to: "
-						+ fileLocation + "cust-hist.csv");
+				// outHist = new PrintWriter(new FileOutputStream(fileLocation
+						// + "cust-hist.csv"));
+				// LOG.debug("\nWriting Customer History file to: "
+						// + fileLocation + "cust-hist.csv");
 			}
 
 			t = (whseKount * distWhseKount * custDistKount * 2);
@@ -716,15 +716,15 @@ public class TPCCLoader extends Loader{
 						customer.c_data = TPCCUtil.randomStr(TPCCUtil
 								.randomNumber(300, 500, gen));
 
-						history.h_c_id = c;
-						history.h_c_d_id = d;
-						history.h_c_w_id = w;
-						history.h_d_id = d;
-						history.h_w_id = w;
-						history.h_date = sysdate;
-						history.h_amount = 10;
-						history.h_data = TPCCUtil.randomStr(TPCCUtil
-								.randomNumber(10, 24, gen));
+						// history.h_c_id = c;
+						// history.h_c_d_id = d;
+						// history.h_c_w_id = w;
+						// history.h_d_id = d;
+						// history.h_w_id = w;
+						// history.h_date = sysdate;
+						// history.h_amount = 10;
+						// history.h_data = TPCCUtil.randomStr(TPCCUtil
+						// 		.randomNumber(10, 24, gen));
 
 						k = k + 2;
 						if (outputFiles == false) {
@@ -753,17 +753,17 @@ public class TPCCLoader extends Loader{
 
 							custPrepStmt.addBatch();
 
-							histPrepStmt.setInt(1, history.h_c_id);
-							histPrepStmt.setInt(2, history.h_c_d_id);
-							histPrepStmt.setInt(3, history.h_c_w_id);
+							// histPrepStmt.setInt(1, history.h_c_id);
+							// histPrepStmt.setInt(2, history.h_c_d_id);
+							// histPrepStmt.setInt(3, history.h_c_w_id);
 
-							histPrepStmt.setInt(4, history.h_d_id);
-							histPrepStmt.setInt(5, history.h_w_id);
-							histPrepStmt.setTimestamp(6, history.h_date);
-							histPrepStmt.setDouble(7, history.h_amount);
-							histPrepStmt.setString(8, history.h_data);
+							// histPrepStmt.setInt(4, history.h_d_id);
+							// histPrepStmt.setInt(5, history.h_w_id);
+							// histPrepStmt.setTimestamp(6, history.h_date);
+							// histPrepStmt.setDouble(7, history.h_amount);
+							// histPrepStmt.setString(8, history.h_data);
 
-							histPrepStmt.addBatch();
+							// histPrepStmt.addBatch();
 
 							if ((k % configCommitCount) == 0) {
 								long tmpTime = new java.util.Date().getTime();
@@ -775,7 +775,7 @@ public class TPCCLoader extends Loader{
 								lastTimeMS = tmpTime;
 
 								custPrepStmt.executeBatch();
-								histPrepStmt.executeBatch();
+								// histPrepStmt.executeBatch();
 								custPrepStmt.clearBatch();
 								custPrepStmt.clearBatch();
 								transCommit();
@@ -802,16 +802,16 @@ public class TPCCLoader extends Loader{
 							str = str + customer.c_phone;
 							out.println(str);
 
-							str = "";
-							str = str + history.h_c_id + ",";
-							str = str + history.h_c_d_id + ",";
-							str = str + history.h_c_w_id + ",";
-							str = str + history.h_d_id + ",";
-							str = str + history.h_w_id + ",";
-							str = str + history.h_date + ",";
-							str = str + history.h_amount + ",";
-							str = str + history.h_data;
-							outHist.println(str);
+							// str = "";
+							// str = str + history.h_c_id + ",";
+							// str = str + history.h_c_d_id + ",";
+							// str = str + history.h_c_w_id + ",";
+							// str = str + history.h_d_id + ",";
+							// str = str + history.h_w_id + ",";
+							// str = str + history.h_date + ",";
+							// str = str + history.h_amount + ",";
+							// str = str + history.h_data;
+							// outHist.println(str);
 
 							if ((k % configCommitCount) == 0) {
 								long tmpTime = new java.util.Date().getTime();
@@ -839,28 +839,28 @@ public class TPCCLoader extends Loader{
 					+ " of " + t);
 			lastTimeMS = tmpTime;
 			custPrepStmt.executeBatch();
-			histPrepStmt.executeBatch();
+			// histPrepStmt.executeBatch();
 			custPrepStmt.clearBatch();
-			histPrepStmt.clearBatch();
+			// histPrepStmt.clearBatch();
 			transCommit();
 			now = new java.util.Date();
-			if (outputFiles == true) {
-				outHist.close();
-			}
+			// if (outputFiles == true) {
+				// outHist.close();
+			// }
 			LOG.debug("End Cust-Hist Data Load @  " + now);
 
 		} catch (SQLException se) {
 			LOG.debug(se.getMessage());
 			transRollback();
-			if (outputFiles == true) {
-				outHist.close();
-			}
+			// if (outputFiles == true) {
+				// outHist.close();
+			// }
 		} catch (Exception e) {
 			e.printStackTrace();
 			transRollback();
-			if (outputFiles == true) {
-				outHist.close();
-			}
+			// if (outputFiles == true) {
+				// outHist.close();
+			// }
 		}
 
 		return (k);
