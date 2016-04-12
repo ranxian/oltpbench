@@ -20,6 +20,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 import com.oltpbenchmark.api.BenchmarkModule;
 import com.oltpbenchmark.api.Procedure;
@@ -32,6 +34,7 @@ import com.oltpbenchmark.benchmarks.ycsb.procedures.ReadModifyWriteRecord;
 import com.oltpbenchmark.benchmarks.ycsb.procedures.ReadRecord;
 import com.oltpbenchmark.benchmarks.ycsb.procedures.ScanRecord;
 import com.oltpbenchmark.benchmarks.ycsb.procedures.UpdateRecord;
+import com.oltpbenchmark.benchmarks.ycsb.procedures.MultipleRecord;
 import com.oltpbenchmark.distributions.CounterGenerator;
 import com.oltpbenchmark.distributions.ZipfianGenerator;
 import com.oltpbenchmark.types.TransactionStatus;
@@ -44,12 +47,12 @@ public class YCSBWorker extends Worker {
     private ZipfianGenerator randScan;
 
     private final Map<Integer, String> m = new HashMap<Integer, String>();
-    
+
     public YCSBWorker(int id, BenchmarkModule benchmarkModule, int init_record_count) {
         super(benchmarkModule, id);
         readRecord = new ZipfianGenerator(init_record_count);// pool for read keys
         randScan = new ZipfianGenerator(YCSBConstants.MAX_SCAN);
-        
+
         synchronized (YCSBWorker.class) {
             // We must know where to start inserting
             if (insertRecord == null) {
@@ -61,7 +64,7 @@ public class YCSBWorker extends Worker {
     @Override
     protected TransactionStatus executeWork(TransactionType nextTrans) throws UserAbortException, SQLException {
         Class<? extends Procedure> procClass = nextTrans.getProcedureClass();
-        
+
         if (procClass.equals(DeleteRecord.class)) {
             deleteRecord();
         } else if (procClass.equals(InsertRecord.class)) {
@@ -74,6 +77,8 @@ public class YCSBWorker extends Worker {
             scanRecord();
         } else if (procClass.equals(UpdateRecord.class)) {
             updateRecord();
+        } else if (procClass.equals(MultipleRecord.class)) {
+            multipleRecord();
         }
         conn.commit();
         return (TransactionStatus.SUCCESS);
@@ -106,12 +111,12 @@ public class YCSBWorker extends Worker {
         ReadModifyWriteRecord proc = this.getProcedure(ReadModifyWriteRecord.class);
         assert (proc != null);
         int keyname = readRecord.nextInt();
-        
+
         String fields[] = new String[10];
         for (int i = 0; i < fields.length; i++) {
             fields[i] = TextGenerator.randomStr(rng(), 100);
         } // FOR
-        
+
         this.m.clear();
         proc.run(conn, keyname, fields, this.m);
     }
@@ -130,6 +135,36 @@ public class YCSBWorker extends Worker {
         assert (proc != null);
         int keyname = readRecord.nextInt();
         proc.run(conn, keyname);
+    }
+
+    // currently, the default setting is 10 reads and 2 writes.
+    private void multipleRecord() throws SQLException {
+        MultipleRecord proc = this.getProcedure(MultipleRecord.class);
+        assert (proc != null);
+
+        List<Integer> readKeyname = new ArrayList<Integer>();
+        for (int i = 0; i < 10; ++i) {
+            int keyname = readRecord.nextInt();
+            readKeyname.add(keyname);
+        }
+        List<Integer> updateKeyname = new ArrayList<Integer>();
+        List<Map<Integer, String>> updateVals = new ArrayList<Map<Integer, String>>();
+        for (int i = 0; i < 2; ++i) {
+            int keyname = readRecord.nextInt();
+            updateKeyname.add(keyname);
+            Map<Integer, String> values = buildNewValues(10);
+            updateVals.add(values);
+        }
+        proc.run(conn, readKeyname, new ArrayList<Map<Integer, String>>(), updateKeyname, updateVals);
+    }
+
+    private Map<Integer, String> buildNewValues(int numVals) {
+        Map<Integer, String> vals = new HashMap<Integer, String>();
+        for (int i = 1; i <= numVals; i++) {
+            //vals.put(i, TextGenerator.randomStr(rng(), 100));
+            vals.put(i, "");
+        }
+        return vals;
     }
 
     private Map<Integer, String> buildValues(int numVals) {

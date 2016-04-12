@@ -29,6 +29,7 @@ public class TestYCSBBenchmark extends AbstractTestBenchmarkModule<YCSBBenchmark
         ReadRecord.class,
         ScanRecord.class,
         UpdateRecord.class,
+        MultipleRecord.class,
     };
     
 	@Override
