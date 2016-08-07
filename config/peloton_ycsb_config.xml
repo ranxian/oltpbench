@@ -2,7 +2,7 @@
 <parameters>
     <dbtype>postgres</dbtype>
     <driver>org.postgresql.Driver</driver>
-    <DBUrl>jdbc:postgresql://localhost:57721/ycsb/</DBUrl>
+    <DBUrl>jdbc:postgresql://localhost:5432/ycsb/</DBUrl>
     <DBName>ycsb</DBName>
     <username>parallels</username>
     <password>parallels</password>
@@ -11,7 +11,7 @@
     <scalefactor>1</scalefactor>
     
     <!-- The workload -->
-    <terminals>2</terminals>
+    <terminals>1</terminals>
     <works>
         <work>
           <time>10</time>
