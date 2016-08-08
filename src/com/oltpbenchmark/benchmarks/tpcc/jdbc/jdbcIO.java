@@ -51,7 +51,7 @@ public class jdbcIO {
 			}
 			ordrPrepStmt.setInt(6, oorder.o_ol_cnt);
 			ordrPrepStmt.setInt(7, oorder.o_all_local);
-			Timestamp entry_d = new java.sql.Timestamp(oorder.o_entry_d);
+			Timestamp entry_d = new org.postgresql.util.PGTimestamp(oorder.o_entry_d);
 			ordrPrepStmt.setTimestamp(8, entry_d);
 
 			ordrPrepStmt.addBatch();
@@ -91,7 +91,7 @@ public class jdbcIO {
 
 			Timestamp delivery_d = null;
 			if (order_line.ol_delivery_d != null)
-				delivery_d = new Timestamp(order_line.ol_delivery_d);
+				delivery_d = new org.postgresql.util.PGTimestamp(order_line.ol_delivery_d);
             if (delivery_d == null)
                 orlnPrepStmt.setNull(6, 0);
             else

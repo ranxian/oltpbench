@@ -41,6 +41,16 @@ public class ReadRecord extends Procedure{
         		results.put(i, r.getString(i));
         }
         r.close();
+
+        /*
+        stmt.setInt(1, keyname);          
+        r=stmt.executeQuery();
+        while(r.next())
+        {
+        	for(int i=1;i<11;i++)
+        		results.put(i, r.getString(i));
+        }
+        r.close();*/
     }
 
 }

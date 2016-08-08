@@ -668,8 +668,8 @@ public class TPCCLoader extends Loader{
 
 					for (int c = 1; c <= custDistKount; c++) {
 
-						Timestamp sysdate = new java.sql.Timestamp(
-								System.currentTimeMillis());
+						Timestamp sysdate = new org.postgresql.util.PGTimestamp(
+						        System.currentTimeMillis());
 
 						customer.c_id = c;
 						customer.c_d_id = d;
@@ -956,7 +956,7 @@ public class TPCCLoader extends Loader{
 							str = str + oorder.o_carrier_id + ",";
 							str = str + oorder.o_ol_cnt + ",";
 							str = str + oorder.o_all_local + ",";
-							Timestamp entry_d = new java.sql.Timestamp(
+							Timestamp entry_d = new org.postgresql.util.PGTimestamp(
 									oorder.o_entry_d);
 							str = str + entry_d;
 							out.println(str);
@@ -1020,7 +1020,7 @@ public class TPCCLoader extends Loader{
 								str = str + order_line.ol_o_id + ",";
 								str = str + order_line.ol_number + ",";
 								str = str + order_line.ol_i_id + ",";
-								Timestamp delivery_d = new Timestamp(
+								Timestamp delivery_d = new org.postgresql.util.PGTimestamp(
 										order_line.ol_delivery_d);
 								str = str + delivery_d + ",";
 								str = str + order_line.ol_amount + ",";

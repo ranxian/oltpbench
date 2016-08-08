@@ -371,6 +371,7 @@ work:
 //        	        }
         	        
         	        status = this.executeWork(next);
+        	        LOG.debug("execute status: " + status.name());
     	        // User Abort Handling
     	        // These are not errors
         	    } catch (UserAbortException ex) {
