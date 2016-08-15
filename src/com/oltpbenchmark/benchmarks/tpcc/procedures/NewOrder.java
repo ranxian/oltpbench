@@ -167,20 +167,15 @@ public class NewOrder extends TPCCProcedure {
 			stmtGetCust.setInt(1, w_id);
 			stmtGetCust.setInt(2, d_id);
 			stmtGetCust.setInt(3, c_id);
-			System.out.println("reach 0!");
 			ResultSet rs = stmtGetCust.executeQuery();
-			System.out.println("reach 1!");
 			if (!rs.next())
 				throw new RuntimeException("C_D_ID=" + d_id
 						+ " C_ID=" + c_id + " not found!");
-			System.out.println("reach 2!");
 			c_discount = rs.getFloat("C_DISCOUNT");
 			c_last = rs.getString("C_LAST");
 			c_credit = rs.getString("C_CREDIT");
-			System.out.println("reach 3!");
 			rs.close();
 			rs = null;
-			System.out.println("reach 4!");
 
 			stmtGetWhse.setInt(1, w_id);
 			rs = stmtGetWhse.executeQuery();
@@ -221,7 +216,7 @@ public class NewOrder extends TPCCProcedure {
 			stmtInsertOOrder.setInt(3, w_id);
 			stmtInsertOOrder.setInt(4, c_id);
 			stmtInsertOOrder.setTimestamp(5,
-					new Timestamp(System.currentTimeMillis()));
+					new org.postgresql.util.PGTimestamp(System.currentTimeMillis()));
 			stmtInsertOOrder.setInt(6, o_ol_cnt);
 			stmtInsertOOrder.setInt(7, o_all_local);
 			stmtInsertOOrder.executeUpdate();
@@ -368,7 +363,7 @@ public class NewOrder extends TPCCProcedure {
 				stmtInsertOrderLine.setInt(5, ol_i_id);
 				stmtInsertOrderLine.setInt(6, ol_supply_w_id);
 				stmtInsertOrderLine.setInt(7, ol_quantity);
-				stmtInsertOrderLine.setFloat(8, ol_amount);
+				stmtInsertOrderLine.setDouble(8, ol_amount);
 				stmtInsertOrderLine.setString(9, ol_dist_info);
 				stmtInsertOrderLine.addBatch();
 
