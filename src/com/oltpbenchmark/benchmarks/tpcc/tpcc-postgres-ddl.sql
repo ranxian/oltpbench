@@ -46,10 +46,10 @@ CREATE TABLE stock (
 -- TODO: o_entry_d  ON UPDATE CURRENT_TIMESTAMP
 DROP TABLE IF EXISTS oorder;
 CREATE TABLE oorder (
-  o_w_id int NOT NULL PRIMARY KEY UNIQUE,
-  o_d_id int NOT NULL PRIMARY KEY UNIQUE,
-  o_id int NOT NULL PRIMARY KEY UNIQUE,
-  o_c_id int NOT NULL UNIQUE,
+  o_w_id int NOT NULL PRIMARY KEY,
+  o_d_id int NOT NULL PRIMARY KEY,
+  o_id int NOT NULL PRIMARY KEY,
+  o_c_id int NOT NULL,
   o_carrier_id int,
   o_ol_cnt decimal NOT NULL,
   o_all_local decimal NOT NULL,
@@ -135,7 +135,7 @@ CREATE TABLE warehouse (
 
 --add constraints and indexes
 -- CREATE INDEX IDX_CUSTOMER_NAME ON customer (c_w_id,c_d_id,c_last,c_first);
--- CREATE INDEX IDX_ORDER ON OORDER (O_W_ID,O_D_ID,O_ID,O_C_ID);
+CREATE INDEX IDX_ORDER ON OORDER (O_W_ID,O_D_ID,O_ID,O_C_ID);
 -- tpcc-mysql create two indexes for the foreign key constraints, Is it really necessary?
 -- CREATE INDEX FKEY_STOCK_2 ON STOCK (S_I_ID);
 -- CREATE INDEX FKEY_ORDER_LINE_2 ON ORDER_LINE (OL_SUPPLY_W_ID,OL_I_ID);
