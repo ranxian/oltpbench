@@ -676,7 +676,7 @@ public class TPCCLoader extends Loader{
 						customer.c_w_id = w;
 
 						// discount is random between [0.0000 ... 0.5000]
-						customer.c_discount = (float) (TPCCUtil.randomNumber(1,
+						customer.c_discount = (double) (TPCCUtil.randomNumber(1,
 								5000, gen) / 10000.0);
 
 						if (TPCCUtil.randomNumber(1, 100, gen) <= 10) {

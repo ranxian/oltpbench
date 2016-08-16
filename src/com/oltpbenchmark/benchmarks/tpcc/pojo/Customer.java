@@ -27,10 +27,10 @@ public class Customer {
 	public int c_payment_cnt;
 	public int c_delivery_cnt;
 	public Timestamp c_since;
-	public float c_discount;
-	public float c_credit_lim;
-	public float c_balance;
-	public float c_ytd_payment;
+	public double c_discount;
+	public double c_credit_lim;
+	public double c_balance;
+	public double c_ytd_payment;
 	public String c_credit;
 	public String c_last;
 	public String c_first;
