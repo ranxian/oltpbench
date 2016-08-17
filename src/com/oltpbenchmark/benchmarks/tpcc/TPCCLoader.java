@@ -993,7 +993,7 @@ public class TPCCLoader extends Loader{
 							order_line.ol_o_id = c;
 							order_line.ol_number = l; // ol_number
 							order_line.ol_i_id = TPCCUtil.randomNumber(1,
-									100000, gen);
+							        configItemCount, gen);
 							if (order_line.ol_o_id < FIRST_UNPROCESSED_O_ID) {
 								order_line.ol_delivery_d = oorder.o_entry_d;
 								order_line.ol_amount = 0;
