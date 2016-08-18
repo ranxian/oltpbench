@@ -273,7 +273,7 @@ public class Payment extends TPCCProcedure {
 			payInsertHist.setInt(4, d_id);
 			payInsertHist.setInt(5, w_id);
 			payInsertHist
-					.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+					.setTimestamp(6, new org.postgresql.util.PGTimestamp(System.currentTimeMillis()));
 			payInsertHist.setDouble(7, h_amount);
 			payInsertHist.setString(8, h_data);
 			payInsertHist.executeUpdate();
