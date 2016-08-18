@@ -563,7 +563,7 @@ public class TPCCLoader extends Loader{
 					district.d_tax = (float) ((TPCCUtil.randomNumber(0, 2000,
 							gen)) / 10000.0);
 
-					district.d_next_o_id = 3001;
+					district.d_next_o_id = configCustPerDist + 1;
 					district.d_name = TPCCUtil.randomStr(TPCCUtil.randomNumber(
 							6, 10, gen));
 					district.d_street_1 = TPCCUtil.randomStr(TPCCUtil
@@ -993,7 +993,7 @@ public class TPCCLoader extends Loader{
 							order_line.ol_o_id = c;
 							order_line.ol_number = l; // ol_number
 							order_line.ol_i_id = TPCCUtil.randomNumber(1,
-									100000, gen);
+							        configItemCount, gen);
 							if (order_line.ol_o_id < FIRST_UNPROCESSED_O_ID) {
 								order_line.ol_delivery_d = oorder.o_entry_d;
 								order_line.ol_amount = 0;
