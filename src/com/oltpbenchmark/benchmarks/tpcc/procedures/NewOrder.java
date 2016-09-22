@@ -105,9 +105,7 @@ public class NewOrder extends TPCCProcedure {
 		stmtInsertOrderLine =this.getPreparedStatement(conn, stmtInsertOrderLineSQL);
 
 
-		System.out.println(terminalDistrictUpperID);
 		int districtID = TPCCUtil.randomNumber(terminalDistrictLowerID,terminalDistrictUpperID, gen);
-		System.out.println(districtID);
 		int customerID = TPCCUtil.getCustomerID(gen);
 
 		int numItems = (int) TPCCUtil.randomNumber(5, 15, gen);
