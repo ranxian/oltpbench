@@ -23,13 +23,17 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 import com.oltpbenchmark.api.SQLStmt;
 import com.oltpbenchmark.benchmarks.tpcc.TPCCConstants;
 import com.oltpbenchmark.benchmarks.tpcc.TPCCUtil;
 import com.oltpbenchmark.benchmarks.tpcc.TPCCWorker;
+import com.oltpbenchmark.benchmarks.tpcc.jTPCCConfig;
 
 public class Delivery extends TPCCProcedure {
 
+    private static final Logger LOG = Logger.getLogger(OrderStatus.class);
 
 	public SQLStmt delivGetOrderIdSQL = new SQLStmt("SELECT NO_O_ID FROM " + TPCCConstants.TABLENAME_NEWORDER + " WHERE NO_D_ID = ?"
 			+ " AND NO_W_ID = ? ORDER BY NO_O_ID ASC LIMIT 1");
@@ -160,7 +164,7 @@ public class Delivery extends TPCCProcedure {
 
 
 			delivUpdateDeliveryDate.setTimestamp(1,
-					new Timestamp(System.currentTimeMillis()));
+					new org.postgresql.util.PGTimestamp(System.currentTimeMillis()));
 			delivUpdateDeliveryDate.setInt(2, no_o_id);
 			delivUpdateDeliveryDate.setInt(3, d_id);
 			delivUpdateDeliveryDate.setInt(4, w_id);
@@ -184,7 +188,7 @@ public class Delivery extends TPCCProcedure {
 			rs.close();
 			rs = null;
 
-			delivUpdateCustBalDelivCnt.setFloat(1, ol_total);
+			delivUpdateCustBalDelivCnt.setDouble(1, ol_total);
 			delivUpdateCustBalDelivCnt.setInt(2, w_id);
 			delivUpdateCustBalDelivCnt.setInt(3, d_id);
 			delivUpdateCustBalDelivCnt.setInt(4, c_id);
@@ -197,7 +201,6 @@ public class Delivery extends TPCCProcedure {
 
 		conn.commit();
 
-		//TODO: This part is not used
 		StringBuilder terminalMessage = new StringBuilder();
 		terminalMessage
 				.append("\n+---------------------------- DELIVERY ---------------------------+\n");
@@ -209,7 +212,7 @@ public class Delivery extends TPCCProcedure {
 		terminalMessage.append(o_carrier_id);
 		terminalMessage.append("\n\n Delivered Orders\n");
 		int skippedDeliveries = 0;
-		for (int i = 1; i <= 10; i++) {
+		for (int i = 1; i <= jTPCCConfig.configDistPerWhse; i++) {
 			if (orderIDs[i - 1] >= 0) {
 				terminalMessage.append("  District ");
 				terminalMessage.append(i < 10 ? " " : "");
@@ -226,6 +229,7 @@ public class Delivery extends TPCCProcedure {
 			}
 		}
 		terminalMessage.append("+-----------------------------------------------------------------+\n\n");
+		if(LOG.isTraceEnabled()) LOG.trace(terminalMessage.toString());
 
 		return skippedDeliveries;
 	}
