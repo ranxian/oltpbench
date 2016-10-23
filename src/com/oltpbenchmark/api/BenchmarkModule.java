@@ -107,6 +107,7 @@ public abstract class BenchmarkModule {
         Connection conn = DriverManager.getConnection(workConf.getDBConnection(),
                 workConf.getDBUsername(),
                 workConf.getDBPassword());
+        conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
         Catalog.setSeparator(conn);
         this.last_connection = conn;
         return (conn);

@@ -27,12 +27,13 @@ import com.oltpbenchmark.api.SQLStmt;
 import com.oltpbenchmark.benchmarks.tpcc.TPCCConstants;
 import com.oltpbenchmark.benchmarks.tpcc.TPCCUtil;
 import com.oltpbenchmark.benchmarks.tpcc.TPCCWorker;
+import com.oltpbenchmark.types.DatabaseType;
+import org.apache.log4j.Logger;
 
 public class Delivery extends TPCCProcedure {
+	private static final Logger LOG = Logger.getLogger(Delivery.class);
 
-
-	public SQLStmt delivGetOrderIdSQL = new SQLStmt("SELECT NO_O_ID FROM " + TPCCConstants.TABLENAME_NEWORDER + " WHERE NO_D_ID = ?"
-			+ " AND NO_W_ID = ? ORDER BY NO_O_ID ASC LIMIT 1");
+	public SQLStmt delivGetOrderIdSQL;
 	public SQLStmt delivDeleteNewOrderSQL = new SQLStmt("DELETE FROM " + TPCCConstants.TABLENAME_NEWORDER + ""
 			+ " WHERE NO_O_ID = ? AND NO_D_ID = ?"
 			+ " AND NO_W_ID = ?");
@@ -65,13 +66,19 @@ public class Delivery extends TPCCProcedure {
 	private PreparedStatement delivSumOrderAmount = null;
 	private PreparedStatement delivUpdateCustBalDelivCnt = null;
 
-
     public ResultSet run(Connection conn, Random gen,
 			int terminalWarehouseID, int numWarehouses,
 			int terminalDistrictLowerID, int terminalDistrictUpperID,
 			TPCCWorker w) throws SQLException {
 		int orderCarrierID = TPCCUtil.randomNumber(1, 10, gen);
 
+		if (getDatabaseType() == DatabaseType.TIMESTEN) {
+			delivGetOrderIdSQL = new SQLStmt("SELECT FIRST 1 NO_O_ID FROM " + TPCCConstants.TABLENAME_NEWORDER + " WHERE NO_D_ID = ?"
+					+ " AND NO_W_ID = ? ORDER BY NO_O_ID ASC");
+		} else {
+			delivGetOrderIdSQL = new SQLStmt("SELECT NO_O_ID FROM " + TPCCConstants.TABLENAME_NEWORDER + " WHERE NO_D_ID = ?"
+					+ " AND NO_W_ID = ? ORDER BY NO_O_ID ASC LIMIT 1");
+		}
 
 		delivGetOrderId = this.getPreparedStatement(conn, delivGetOrderIdSQL);
 		delivDeleteNewOrder =  this.getPreparedStatement(conn, delivDeleteNewOrderSQL);

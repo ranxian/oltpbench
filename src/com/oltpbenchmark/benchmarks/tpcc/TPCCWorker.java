@@ -40,6 +40,7 @@ import com.oltpbenchmark.benchmarks.tpcc.procedures.StockLevel;
 import com.oltpbenchmark.benchmarks.tpcc.procedures.TPCCProcedure;
 import com.oltpbenchmark.types.TransactionStatus;
 import com.oltpbenchmark.util.SimplePrinter;
+import org.apache.log4j.Logger;
 
 public class TPCCWorker extends Worker {
 
@@ -58,6 +59,9 @@ public class TPCCWorker extends Worker {
 	private int transactionCount = 1, numWarehouses;
 
 	private static final AtomicInteger terminalId = new AtomicInteger(0);
+
+	private static final Logger LOG = Logger.getLogger(TPCCWorker.class);
+
 
 	public TPCCWorker(String terminalName, int terminalWarehouseID,
 			int terminalDistrictLowerID, int terminalDistrictUpperID,

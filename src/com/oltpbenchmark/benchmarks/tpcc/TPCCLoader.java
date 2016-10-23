@@ -1141,7 +1141,7 @@ public class TPCCLoader extends Loader{
 		LOG.debug("       End Time = " + endDate);
 		LOG.debug("       Run Time = " + (int) runTimeMS / 1000 + " Seconds");
 		LOG.debug("    Rows Loaded = " + totalRows + " Rows");
-		LOG.debug("Rows Per Second = " + (totalRows / (runTimeMS / 1000)) + " Rows/Sec");
+		LOG.debug("Rows Per Second = " + (totalRows / ((runTimeMS / 1000.0)) + " Rows/Sec");
 		LOG.debug("------------------------------------------------------");
 	
 	}

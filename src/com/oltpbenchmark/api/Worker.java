@@ -398,7 +398,7 @@ work:
                 } catch (SQLException ex) {
                                        
                     //TODO: Handle acceptable error codes for every DBMS     
-                    LOG.debug(next+ " " +  ex.getMessage()+" "+ex.getErrorCode()+ " - " +ex.getSQLState());
+                    LOG.info(next+ " " +  ex.getMessage()+" "+ex.getErrorCode()+ " - " +ex.getSQLState());
 
                     this.txnErrors.put(next);
                     

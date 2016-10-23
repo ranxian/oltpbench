@@ -24,6 +24,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.oltpbenchmark.types.DatabaseType;
 import org.apache.log4j.Logger;
 
 import com.oltpbenchmark.api.SQLStmt;
@@ -36,9 +37,9 @@ public class OrderStatus extends TPCCProcedure {
 
     private static final Logger LOG = Logger.getLogger(OrderStatus.class);
 
-	public SQLStmt ordStatGetNewestOrdSQL = new SQLStmt("SELECT O_ID, O_CARRIER_ID, O_ENTRY_D FROM " + TPCCConstants.TABLENAME_OPENORDER
+	public SQLStmt ordStatGetNewestOrdSQL = new SQLStmt("SELECT FIRST 1 O_ID, O_CARRIER_ID, O_ENTRY_D FROM " + TPCCConstants.TABLENAME_OPENORDER
 			+ " WHERE O_W_ID = ?"
-			+ " AND O_D_ID = ? AND O_C_ID = ? ORDER BY O_ID DESC LIMIT 1");
+			+ " AND O_D_ID = ? AND O_C_ID = ? ORDER BY O_ID DESC");
 
 	public SQLStmt ordStatGetOrderLinesSQL = new SQLStmt("SELECT OL_I_ID, OL_SUPPLY_W_ID, OL_QUANTITY,"
 			+ " OL_AMOUNT, OL_DELIVERY_D"
@@ -67,7 +68,6 @@ public class OrderStatus extends TPCCProcedure {
 				int terminalWarehouseID, int numWarehouses,
 				int terminalDistrictLowerID, int terminalDistrictUpperID,
 				TPCCWorker w) throws SQLException{
-
 
 			//initializing all prepared statements
 			payGetCust =this.getPreparedStatement(conn, payGetCustSQL);

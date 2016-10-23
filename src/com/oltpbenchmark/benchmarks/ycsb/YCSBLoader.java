@@ -46,6 +46,7 @@ public class YCSBLoader extends Loader {
         
         String sql = SQLUtil.getInsertSQL(catalog_tbl);
         PreparedStatement stmt = this.conn.prepareStatement(sql);
+
         long total = 0;
         int batch = 0;
         for (int i = 0; i < this.num_record; i++) {
