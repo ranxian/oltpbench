@@ -26,6 +26,26 @@
     </path>
 
     <!-- *************************************** BUILDING *************************************** -->
+
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        <classpath>
+            <pathelement location="${lib.dir}/ant-contrib.jar"/>
+            </classpath>
+        </taskdef>
+        
+    <!-- EXEC ASSERTS -->
+    <condition property="assertions" value="false">
+        <not><isset property="assertions"/></not>
+        </condition>
+    <if>
+        <equals arg1="${assertions}" arg2="true" />
+        <then>
+            <assertions id="assertions"><enable /></assertions>
+            </then>
+        <else>
+            <assertions id="assertions"><disable /></assertions>
+        </else>
+    </if>
     
     <target name="build"
             description="Build the entire framework">
@@ -101,7 +121,8 @@
             <arg line="--execute ${execute}" />
             <arg line="${extra}" />
             <classpath refid='project.classpath' />
-            <assertions><enable/></assertions>
+
+            <assertions refid="assertions"/>
         </java>
     </target>
     
