@@ -42,8 +42,12 @@ public abstract class TextGenerator {
      */
     public static char[] randomChars(Random rng, int strLen) {
         char chars[] = new char[strLen];
+        return randomChars(rng, chars);
+    }
+
+    public static char[] randomChars(Random rng, char chars[]) {
         for (int i = 0; i < chars.length; i++) {
-            chars[i] = (char)CHAR_SYMBOLS[rng.nextInt(CHAR_SYMBOLS.length)];
+            chars[i] = CHAR_SYMBOLS[rng.nextInt(CHAR_SYMBOLS.length)];
         } // FOR
         return (chars);
     }

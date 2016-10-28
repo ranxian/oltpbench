@@ -49,6 +49,7 @@ import com.oltpbenchmark.util.ClassUtil;
 import com.oltpbenchmark.util.FileUtil;
 import com.oltpbenchmark.util.QueueLimitException;
 import com.oltpbenchmark.util.ResultUploader;
+import com.oltpbenchmark.util.StringBoxUtil;
 import com.oltpbenchmark.util.StringUtil;
 import com.oltpbenchmark.util.TimeUtil;
 
@@ -71,6 +72,10 @@ public class DBWorkload {
             org.apache.log4j.PropertyConfigurator.configure(log4jPath);
         } else {
             throw new RuntimeException("Missing log4j.properties file");
+        }
+
+        if (ClassUtil.isAssertsEnabled()) {
+            LOG.warn("\n" + getAssertWarning());
         }
         
         // create the command line parser
@@ -743,6 +748,13 @@ public class DBWorkload {
             return (val != null ? val.equalsIgnoreCase("true") : false);
         }
         return (false);
+    }
+
+    public static String getAssertWarning() {
+        String msg = "!!! WARNING !!!\n" +
+            "OLTP-Bench is executing with JVM asserts enabled. This will degrade runtime performance.\n" +
+            "You can disable them by setting the config option 'assertions' to FALSE";
+        return StringBoxUtil.heavyBox(msg);
     }
     
 }
